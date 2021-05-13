@@ -56,8 +56,10 @@
              console.log('centerName --->'+center);
              ret=ret+ '<tr><td>'+date+'</td><td>'+center+'</td><td>'+pincode+'</td><td>'+district_name+'</td><td>'+age+'</td><td>'+avail+'</td><td>'+vaccine+'</td></tr>';
 
-             //document.write(centerName);
-            // alert('Available at '+ centerName);
+              if(jsonData.centers[cen].sessions[sess].available_capacity != 0){
+                document.getElementById('alarm').play();
+                document.getElementById('alarm').muted = false;
+              }
            }
          }
        }
@@ -65,8 +67,7 @@
      }
 
      function clicked(){
-          getData(710);
-
+       setInterval(function(){ getData(710); }, 5000);
          }
 
          function getData(dist_id){
