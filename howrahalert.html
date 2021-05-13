@@ -11,6 +11,7 @@
   </style>
 </head>
 <audio id="alarm" src="alarms.mp3" muted></audio>
+<div id="count"></div>
 <button onclick="clicked()">start</button>
 
 <div>
@@ -53,8 +54,6 @@
              console.log('centerName --->'+center);
              centerName = centerName+'<tr><td>'+date+'</td><td>'+center+'</td><td>'+pincode+'</td><td>'+age+'</td><td>'+avail+'</td></tr>';
 
-             //document.write(centerName);
-            // alert('Available at '+ centerName);
            }
          }
        }
@@ -62,7 +61,10 @@
      }
 
      function clicked(){
+       var count=0;
        setInterval(function(){
+         count++;
+         document.getElementById("count").innerHTML = 'called '+count+' times';
          const Http = new XMLHttpRequest();
          const url='https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id=721&date=13-05-2021';
          Http.open("GET", url);
