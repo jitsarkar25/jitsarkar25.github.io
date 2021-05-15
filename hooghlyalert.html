@@ -13,6 +13,8 @@
 <audio id="alarm" src="alarms.mp3" muted></audio>
 <div id="count"></div>
 <button onclick="clicked()">start</button>
+<input type="checkbox" id="18plus" value="18plus" onclick="only18()">
+<label for="18plus"> only 18 +</label><br>
 
 <div>
 
@@ -32,8 +34,11 @@
   <table>
 </div>
   <script type="text/javascript">
-
-
+    var only18check =false;
+    function only18(){
+      debugger;
+        only18check = document.getElementById("18plus").checked;
+    }
 
 
      function parseData(data){
@@ -46,13 +51,26 @@
          var pincode=jsonData.centers[cen].pincode;
          for(var sess in jsonData.centers[cen].sessions){
            if(jsonData.centers[cen].sessions[sess].available_capacity != 0 ){
-             var age =jsonData.centers[cen].sessions[sess].min_age_limit;
-             var avail=jsonData.centers[cen].sessions[sess].available_capacity;
-             var date = jsonData.centers[cen].sessions[sess].date;
-             document.getElementById('alarm').play();
-             document.getElementById('alarm').muted = false;
-             console.log('centerName --->'+center);
-             centerName = centerName+'<tr><td>'+date+'</td><td>'+center+'</td><td>'+pincode+'</td><td>'+age+'</td><td>'+avail+'</td></tr>';
+             if(only18check && jsonData.centers[cen].sessions[sess].min_age_limit == 18){
+               var age =jsonData.centers[cen].sessions[sess].min_age_limit;
+               var avail=jsonData.centers[cen].sessions[sess].available_capacity;
+               var date = jsonData.centers[cen].sessions[sess].date;
+               document.getElementById('alarm').play();
+               document.getElementById('alarm').muted = false;
+               console.log('centerName --->'+center);
+               centerName = centerName+'<tr><td>'+date+'</td><td>'+center+'</td><td>'+pincode+'</td><td>'+age+'</td><td>'+avail+'</td></tr>';
+
+             }
+             else if(!only18check){
+               var age =jsonData.centers[cen].sessions[sess].min_age_limit;
+               var avail=jsonData.centers[cen].sessions[sess].available_capacity;
+               var date = jsonData.centers[cen].sessions[sess].date;
+               document.getElementById('alarm').play();
+               document.getElementById('alarm').muted = false;
+               console.log('centerName --->'+center);
+               centerName = centerName+'<tr><td>'+date+'</td><td>'+center+'</td><td>'+pincode+'</td><td>'+age+'</td><td>'+avail+'</td></tr>';
+
+             }
 
              //document.write(centerName);
             // alert('Available at '+ centerName);
@@ -77,7 +95,7 @@
            parseData(Http.responseText);
 
          }
-       }, 20000);
+       }, 5000);
 
 
      }
