@@ -67,7 +67,7 @@
      }
 
      function clicked(){
-       setInterval(function(){ getData(710); }, 5000);
+       setInterval(function(){ getData(710); }, 120000);
          }
 
          function getData(dist_id){
@@ -79,7 +79,7 @@
                  d=i;
                   console.log('i--->',i);
                  const Http = new XMLHttpRequest();
-                 const url='https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id='+i+'&date=19-05-2021';
+                 const url='https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id='+i+'&date=20-05-2021';
                  Http.open("GET", url);
                  Http.send();
 
