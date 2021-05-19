@@ -57,6 +57,9 @@
                var date = jsonData.centers[cen].sessions[sess].date;
                document.getElementById('alarm').play();
                document.getElementById('alarm').muted = false;
+               var msg = new SpeechSynthesisUtterance();
+               msg.text = "Slot Available at " + center ;
+               window.speechSynthesis.speak(msg);
                console.log('centerName --->'+center);
                centerName = centerName+'<tr><td>'+date+'</td><td>'+center+'</td><td>'+pincode+'</td><td>'+age+'</td><td>'+avail+'</td></tr>';
 
@@ -67,6 +70,9 @@
                var date = jsonData.centers[cen].sessions[sess].date;
                document.getElementById('alarm').play();
                document.getElementById('alarm').muted = false;
+               var msg = new SpeechSynthesisUtterance();
+               msg.text = "Slot Available at " + center ;
+               window.speechSynthesis.speak(msg);
                console.log('centerName --->'+center);
                centerName = centerName+'<tr><td>'+date+'</td><td>'+center+'</td><td>'+pincode+'</td><td>'+age+'</td><td>'+avail+'</td></tr>';
 
