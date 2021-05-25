@@ -12,6 +12,7 @@
 </head>
 <audio id="alarm" src="alarms.mp3" muted></audio>
 <button onclick="clicked()">start</button>
+<input type="date" id="vacdate" ></input>
 
 <div>
 
@@ -50,13 +51,13 @@
          for(var sess in jsonData.centers[cen].sessions){
            if(jsonData.centers[cen].sessions[sess].min_age_limit == 18){
              var age =jsonData.centers[cen].sessions[sess].min_age_limit;
-             var avail=jsonData.centers[cen].sessions[sess].available_capacity;
+             var avail=jsonData.centers[cen].sessions[sess].available_capacity_dose1;
              var date = jsonData.centers[cen].sessions[sess].date;
              var vaccine = jsonData.centers[cen].sessions[sess].vaccine;
              console.log('centerName --->'+center);
              ret=ret+ '<tr><td>'+date+'</td><td>'+center+'</td><td>'+pincode+'</td><td>'+district_name+'</td><td>'+age+'</td><td>'+avail+'</td><td>'+vaccine+'</td></tr>';
 
-              if(jsonData.centers[cen].sessions[sess].available_capacity != 0){
+              if(jsonData.centers[cen].sessions[sess].available_capacity_dose1 != 0){
                 document.getElementById('alarm').play();
                 document.getElementById('alarm').muted = false;
               }
@@ -67,19 +68,23 @@
      }
 
      function clicked(){
-       setInterval(function(){ getData(710); }, 60000);
-         }
+        getData(710);
+       }
 
          function getData(dist_id){
 
            var centerName ='';
            var d ;
+           var vacdate = new Date(document.getElementById('vacdate').value);
+           var day = vacdate.getDate();
+           var month = vacdate.getMonth()+1;
+           var year = vacdate.getFullYear();
            try{
            for(var i = dist_id ; i<=737;i++){
                  d=i;
                   console.log('i--->',i);
                  const Http = new XMLHttpRequest();
-                 const url='https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id='+i+'&date=24-05-2021';
+                 const url='https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id='+i+'&date='+day+"-0"+month+"-"+year;
                  Http.open("GET", url);
                  Http.send();
 
