@@ -1,0 +1,116 @@
+<html>
+<head>
+  <style>
+  table{
+    width:100%;
+    margin: 20px;
+  }
+      table, th, td {
+        border: 1px solid black;
+        }
+  </style>
+</head>
+<audio id="alarm" src="alarms.mp3" muted></audio>
+<div id="count"></div>
+<button onclick="clicked()">start</button>
+<input type="date" id="vacdate" ></input>
+<input type="checkbox" id="18plus" value="18plus" onclick="only18()">
+<label for="18plus"> only 18 +</label><br>
+
+<div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Center Name</th>
+        <th>Pincode</th>
+        <th>Age</th>
+        <th>Availability</th>
+      </tr>
+    </thead>
+    <tbody id="nameofcenter">
+
+    </tbody>
+  <table>
+</div>
+  <script type="text/javascript">
+    var only18check =false;
+    function only18(){
+        only18check = document.getElementById("18plus").checked;
+    }
+
+
+     function parseData(data){
+       var jsonData = JSON.parse(data);
+       var centerName ='';
+       for(var cen in jsonData.centers)
+       {
+      //   debugger;
+         var center =jsonData.centers[cen].name;
+         var pincode=jsonData.centers[cen].pincode;
+         for(var sess in jsonData.centers[cen].sessions){
+           if(jsonData.centers[cen].sessions[sess].available_capacity_dose1 != 0 ){
+             if(only18check && jsonData.centers[cen].sessions[sess].min_age_limit == 18){
+               var age =jsonData.centers[cen].sessions[sess].min_age_limit;
+               var avail=jsonData.centers[cen].sessions[sess].available_capacity_dose1;
+               var date = jsonData.centers[cen].sessions[sess].date;
+               document.getElementById('alarm').play();
+               document.getElementById('alarm').muted = false;
+               var msg = new SpeechSynthesisUtterance();
+               msg.text = jsonData.centers[cen].sessions[sess].available_capacity_dose1 + " Slot Available at " + center ;
+               window.speechSynthesis.speak(msg);
+               console.log('centerName --->'+center);
+               centerName = centerName+'<tr><td>'+date+'</td><td>'+center+'</td><td>'+pincode+'</td><td>'+age+'</td><td>'+avail+'</td></tr>';
+
+             }
+             else if(!only18check){
+               var age =jsonData.centers[cen].sessions[sess].min_age_limit;
+               var avail=jsonData.centers[cen].sessions[sess].available_capacity_dose1;
+               var date = jsonData.centers[cen].sessions[sess].date;
+               document.getElementById('alarm').play();
+               document.getElementById('alarm').muted = false;
+               var msg = new SpeechSynthesisUtterance();
+               msg.text = "Slot Available at " + center ;
+               window.speechSynthesis.speak(msg);
+               console.log('centerName --->'+center);
+               centerName = centerName+'<tr><td>'+date+'</td><td>'+center+'</td><td>'+pincode+'</td><td>'+age+'</td><td>'+avail+'</td></tr>';
+
+             }
+
+             //document.write(centerName);
+            // alert('Available at '+ centerName);
+           }
+         }
+       }
+       document.getElementById("nameofcenter").innerHTML = centerName;
+     }
+
+     function clicked(){
+       var count = 0;
+       var vacdate = new Date(document.getElementById('vacdate').value);
+       var day = vacdate.getDate();
+       var month = vacdate.getMonth()+1;
+       var year = vacdate.getFullYear();
+       setInterval(function(){
+         count++;
+         document.getElementById("count").innerHTML = 'called '+count+' times';
+         const Http = new XMLHttpRequest();
+         const url='https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id=363&date='+day+"-0"+month+"-"+year;
+         Http.open("GET", url);
+         Http.send();
+
+         Http.onreadystatechange = (e) => {
+           console.log(Http.responseText);
+           parseData(Http.responseText);
+
+         }
+       }, 30000);
+
+
+     }
+
+
+
+  </script>
+</html>
