@@ -96,7 +96,7 @@
          count++;
          document.getElementById("count").innerHTML = 'called '+count+' times';
          const Http = new XMLHttpRequest();
-         const url='https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id=725&date='+day+"-0"+month+"-"+year;
+         const url='https://cdn-api.co-vin.in/api/v2/appointment/sessions/calendarByDistrict?district_id=725&date=0'+day+"-0"+month+"-"+year;
          Http.open("GET", url);
          Http.send();
 

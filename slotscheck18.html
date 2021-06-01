@@ -76,7 +76,7 @@
            var centerName ='';
            var d ;
            var vacdate = new Date(document.getElementById('vacdate').value);
-           var day = vacdate.getDate();
+           var day = vacdate.getDate() < 10 ? '0'+vacdate.getDate():vacdate.getDate() ;
            var month = vacdate.getMonth()+1;
            var year = vacdate.getFullYear();
            try{
